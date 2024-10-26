@@ -14,14 +14,14 @@ div {
 This is a brief outline of HTML Cant's syntax, for more detail check out the grammar in `src/cant.pest`.
 
 ### Element Syntax
-Elements in Cant are constructed as follows:
+Elements in *Cant* are constructed as follows:
 `tag-name [attribute list] {child element(s)}`
 - **Tag Name** is any valid HTML tag - like div, h1, p, or head - written plainly, on it's own (i.e. no surrounding characters).
 - **Attribute List** is where any extra tag attributes go, with shorthand for classes (`.classname`) and IDs (`#element-id`). You can read more on these below.
 - **Child Elements** is where you describe any children the block has. This can be either proper elements, or raw text strings.
 
 ### Comments & Whitespace
-Comments in Cant are written as follows:
+Comments in *Cant* are written as follows:
 ```
 /* I'm an inline comment*/
 // I'm a single line comment
@@ -30,8 +30,8 @@ Comments in Cant are written as follows:
 //! I'm a single line comment that'll be inserted into the final html
 ```
 
-Other simplified or abstracted markup languages often rely on whitespace to infer details about the structure of the desired DOM. Cant however is still verbose enough in it's syntax to remove the need for whitespace, allowing you to indent and format your code how you like.
-```
+Other simplified or abstracted markup languages often rely on whitespace to infer details about the structure of the desired DOM. *Cant*, however, is still verbose enough in it's syntax to remove the need for whitespace, allowing you to indent and format your code how you like.
+```css
 html {
   head {
     title "Cantus Full Head Example"
@@ -78,7 +78,7 @@ html {
 
 ### Extended Example
 Below is a complete HTML page with many more examples of common HTML patterns in Cant.
-```
+```css
 html {
   head {
     title "Cantus Example"
@@ -111,7 +111,8 @@ html {
       p "© 2024 Cantus Project"
     }
   }
-}```
+}
+```
 
 ## CLI Usage
 The Cant Compiler (*cantus*) is a simple CLI tool written in the Rust programming language. This tool is used to generate static html files, transpile Gleam templates, and any other tasks you might need for development. Basic usage is as follows:
@@ -120,6 +121,27 @@ cantus
 ```
 
 ## Gleam Templating
+*Cant*'s templating functionality allows you to write *Cant* syntax directly in a gleam file. The functionality is very similar to Go's `templ` library, where the embedded Cant files must first be cross compiled into plain Gleam before execution. An example of a Gleam-Cant file is below:
+```gleam
+fn render_test_fragment() {
+  test_fragment("World", "this demos HTML Cant embedded in Gleam.")
+}
+
+fn double_to_str(i) {
+  int.to_string(i * 2)
+}
+
+tmpl test_fragment(user: string, description: string) {
+  h1 ${"Hello, " <> user <> "!"} // gleam code can be inserted inline between `${}` braces
+  p $description // parameters can be added directly, provided they're string types
+  div [.block] {
+    p "it demos HTML Cant being used directly in gleam"
+    $double_to_str(12) // again, gleam functions can be called using $ syntax
+  }
+  $cmp.button() // render in templates from other modules
+}
+  
+```
 ### Variable Insertion
 ### Inline Code
 ### Alternate Output Formats
